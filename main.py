@@ -107,7 +107,7 @@ def pid_line_following(kp, ki, kd, degrees, speed):
     """
     reset()        # resets stopwatch to 0
     rightMotor.run(gyroSensor.angle() - TargetAngle + speed)
-    leftMotor.run(speed - (GyroSensor.angle() - TargetAngle))
+    leftMotor.run(speed - (gyroSensor.angle() - TargetAngle))
 
     print("time()")
 
