@@ -17,11 +17,12 @@ rightMotor = Motor(Port.C)
 
 leftSensor = ColorSensor(Port.S1)
 rightSensor = ColorSensor(Port.S4)
-
+touchSensor = TouchSensor)Port.S2)
 gyroSensor = GyroSensor(Port.S3)
 
 mainDriveBase = DriveBase(leftMotor, rightMotor)
 
+class Tools:
 
 def gyro_turn_left(sec, target, kp):
     """
@@ -39,6 +40,7 @@ def gyro_turn_left(sec, target, kp):
         leftMotor.run(error * kp)
         wait(10)
         l_i = l_i + 1
+        pass
     leftMotor.stop(Stop.BRAKE)
 
 def gyro_turn_right(sec, target, kp):
@@ -57,6 +59,7 @@ def gyro_turn_right(sec, target, kp):
         rightMotor.run(error * kp)
         wait(10)
         r_i = r_i + 1
+        pass
     rightMotor.stop(Stop.BRAKE)
 
 def move_forward_degrees(degrees, speed):
@@ -90,15 +93,16 @@ def pid_line_following(kp, ki, kd, degrees, speed):
     last_error = 0
     derivative = 0
     while degrees >= leftMotor.angle():
-        error = (leftMotor.reflection() - rightMotor.reflection())
-        integral = integral + error
-        derivative = error - last_error
-        mainDriveBase.drive(speed, (error * kp) + (integral * ki) + (derivative * kd))
-        last_error = error
+         error = (leftMotor.reflection() - rightMotor.reflection())
+         integral = integral + error
+         derivative = error - last_error
+         mainDriveBase.drive(speed, (error * kp) + (integral * ki) + (derivative * kd))
+         last_error = error
+         pass
     mainDriveBase.stop(Stop.BRAKE)
     
     
-def gyro_follow(speed, TargetAngle, ExitTime):
+def gyro_follow(speed, TargetAngle, ExitTime, degrees):
     """
     Uses the Gyro Sensor to keep robot from Drifting
     :param speed: How fast the robot should go. type: int
@@ -107,12 +111,24 @@ def gyro_follow(speed, TargetAngle, ExitTime):
     """
     reset()
     # resets stopwatch to 0
-    rightMotor.run(gyroSensor.angle() - TargetAngle + speed)
-    leftMotor.run(speed - (gyroSensor.angle() - TargetAngle))
-    print("time()")
-    if time() >= ExitTime:
-        rightMotor.stop(Stop.HOLD)
-        leftMotor.stop(Stop.HOLD)
+    while ExitTime >= time():
+         rightMotor.run(gyroSensor.angle() - TargetAngle + speed)
+         leftMotor.run(speed - (gyroSensor.angle() - TargetAngle))
+         print("time()")
+         pass
+    rightMotor.stop(Stop.HOLD)
+    leftMotor.stop(Stop.HOLD)
+    
+    # Code Below is if we want to exit for degrees
+    """
+    while degrees >= leftMotor.angle():
+         rightMotor.run(gyroSensor.angle() - TargetAngle + speed)
+         leftMotor.run(speed - (gyroSensor.angle() - TargetAngle))
+         print("time()")
+         pass
+    rightMotor.stop(Stop.HOLD)
+    leftMotor.stop(Stop.HOLD)
+    """
 
 
 
