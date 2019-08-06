@@ -105,10 +105,15 @@ def pid_line_following(kp, ki, kd, degrees, speed):
     :param TargetAngle: The angle the Gyro should follow at. type: float
     :param ExitTime: The time in (ms) the program should stop. type: int
     """
-    Sec = 0
-    Sec = Sec + 1
+    reset()        # resets stopwatch to 0
     rightMotor.run(gyroSensor.angle() - TargetAngle + speed)
     leftMotor.run(speed - (GyroSensor.angle() - TargetAngle))
+
+    print("time()")
+
+    if time() >= ExitTime:
+        rightMotor.stop(Stop.HOLD)
+        leftMotor.stop(Stop.HOLD)
 
 
 
