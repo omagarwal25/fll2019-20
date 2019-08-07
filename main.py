@@ -6,7 +6,7 @@ from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
                                  InfraredSensor, UltrasonicSensor, GyroSensor)
 from pybricks.parameters import (Port, Stop, Direction, Button, Color,
                                  SoundFile, ImageFile, Align)
-from pybricks.tools import print, wait, StopWatch
+from pybricks.tools import (print, wait, StopWatch)
 from pybricks.robotics import DriveBase
 
 leftMotor = Motor(Port.B)
@@ -14,10 +14,10 @@ rightMotor = Motor(Port.C)
 
 leftSensor = ColorSensor(Port.S1)
 rightSensor = ColorSensor(Port.S4)
-touchSensor = TouchSensor)Port.S2)
+touchSensor = TouchSensor(Port.S2)
 gyroSensor = GyroSensor(Port.S3)
 
-stopWatch = stopWatch()
+stopWatch = StopWatch()
 
 mainDriveBase = DriveBase(leftMotor, rightMotor)
 
