@@ -14,7 +14,9 @@ rightMotor = Motor(Port.C)
 
 leftSensor = ColorSensor(Port.S1)
 rightSensor = ColorSensor(Port.S4)
+
 touchSensor = TouchSensor(Port.S2)
+
 gyroSensor = GyroSensor(Port.S3)
 
 stopWatch = StopWatch()
