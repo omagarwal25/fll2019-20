@@ -91,7 +91,7 @@ def pid_line_following(kp, ki, kd, degrees, speed):
     mainDriveBase.stop(Stop.HOLD)
     
     
-def gyro_follow(speed, target_angle, exit_time):
+def gyro_follow(speed, target_angle, exit_time, kp):
     """
     Uses the Gyro Sensor to keep robot from Drifting
     :param speed: How fast the robot should go. type: int
@@ -102,9 +102,8 @@ def gyro_follow(speed, target_angle, exit_time):
     stopWatch.time()
     # resets stopwatch to 0
     while exit_time >= stopWatch.time():
-         rightMotor.run(gyroSensor.angle() - target_angle + speed)
-         leftMotor.run(speed - (gyroSensor.angle() - target_angle))
-         print("time()")
+        error = gyroSensor.angle() - target_angle
+        mainDriveBase.drive(speed, error * kp)
     rightMotor.stop(Stop.HOLD)
     leftMotor.stop(Stop.HOLD)
     
