@@ -95,8 +95,9 @@ def gyro_follow(speed, target_angle, exit_time):
     """
     Uses the Gyro Sensor to keep robot from Drifting
     :param speed: How fast the robot should go. type: int
-    :param TargetAngle: The angle the Gyro should follow at. type: float
-    :param ExitTime: The time in (ms) the program should stop. type: int
+    :param target_angle: The angle the Gyro should follow at. type: float
+    :param exit_time: The time in (ms) the program should stop. type: int
+    :return: null
     """
     stopWatch.time()
     # resets stopwatch to 0
