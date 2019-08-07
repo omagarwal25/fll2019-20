@@ -9,9 +9,6 @@ from pybricks.parameters import (Port, Stop, Direction, Button, Color,
 from pybricks.tools import print, wait, StopWatch
 from pybricks.robotics import DriveBase
 
-l_i = 0
-r_i = 0
-
 leftMotor = Motor(Port.B)
 rightMotor = Motor(Port.C)
 
@@ -20,47 +17,42 @@ rightSensor = ColorSensor(Port.S4)
 touchSensor = TouchSensor)Port.S2)
 gyroSensor = GyroSensor(Port.S3)
 
+stopWatch = stopWatch()
+
 mainDriveBase = DriveBase(leftMotor, rightMotor)
 
-class Tools:
 
-def gyro_turn_left(sec, target, kp):
+def gyro_turn_left(time, target, kp):
     """
     Turns the robot left for a certain time and degrees
-    :param sec: How many seconds should the robot take. type: int
+    :param time: The time in (ms) the program should stop. type: int
     :param target: How many degrees the robot should target. type: int
     :param kp: How sharply should the robot correct. type: int
     :return: null
     """
     gyroSensor.reset_angle(0)
-    error = 0
-    l_i = 0
-    while l_i != sec:
-        error = target - gyroSensor.angle()
+    stopWatch.reset()
+    # resets stopwatch to 0
+    while time >= stopWatch.time():
+        error = target + gyroSensor.angle()
         leftMotor.run(error * kp)
-        wait(10)
-        l_i = l_i + 1
-        pass
-    leftMotor.stop(Stop.BRAKE)
+    leftMotor.stop(Stop.HOLD)
 
 def gyro_turn_right(sec, target, kp):
     """
     Turns the robot right for a certain time and degrees
-    :param sec: How many seconds should the robot take. type: int
+    :param sec: The time in (ms) the program should stop. type: int
     :param target: How many degrees the robot should target. type: int
     :param kp: How sharply should the robot correct. type: int
     :return: null
     """
     gyroSensor.reset_angle(0)
-    error = 0
-    r_i = 0
-    while r_i != sec:
+    stopWatch.reset()
+    # resets stopwatch to 0
+    while sec >= stopWatch.time():
         error = target + gyroSensor.angle()
         rightMotor.run(error * kp)
-        wait(10)
-        r_i = r_i + 1
-        pass
-    rightMotor.stop(Stop.BRAKE)
+    rightMotor.stop(Stop.HOLD)
 
 def move_forward_degrees(degrees, speed):
     """
@@ -73,7 +65,7 @@ def move_forward_degrees(degrees, speed):
     mainDriveBase.drive(speed, 0)
     while degrees >= leftMotor.angle():
         pass
-    mainDriveBase.stop(Stop.BRAKE)
+    mainDriveBase.stop(Stop.HOLD)
 
 
 
@@ -88,34 +80,30 @@ def pid_line_following(kp, ki, kd, degrees, speed):
     :return: null
     """
     leftMotor.reset_angle(0)
-    error = 0
     integral = 0
     last_error = 0
-    derivative = 0
     while degrees >= leftMotor.angle():
          error = (leftMotor.reflection() - rightMotor.reflection())
          integral = integral + error
          derivative = error - last_error
          mainDriveBase.drive(speed, (error * kp) + (integral * ki) + (derivative * kd))
          last_error = error
-         pass
-    mainDriveBase.stop(Stop.BRAKE)
+    mainDriveBase.stop(Stop.HOLD)
     
     
-def gyro_follow(speed, TargetAngle, ExitTime, degrees):
+def gyro_follow(speed, target_angle, exit_time):
     """
     Uses the Gyro Sensor to keep robot from Drifting
     :param speed: How fast the robot should go. type: int
     :param TargetAngle: The angle the Gyro should follow at. type: float
     :param ExitTime: The time in (ms) the program should stop. type: int
     """
-    reset()
+    stopWatch.time()
     # resets stopwatch to 0
-    while ExitTime >= time():
-         rightMotor.run(gyroSensor.angle() - TargetAngle + speed)
-         leftMotor.run(speed - (gyroSensor.angle() - TargetAngle))
+    while exit_time >= stopWatch.time():
+         rightMotor.run(gyroSensor.angle() - target_angle + speed)
+         leftMotor.run(speed - (gyroSensor.angle() - target_angle))
          print("time()")
-         pass
     rightMotor.stop(Stop.HOLD)
     leftMotor.stop(Stop.HOLD)
     
