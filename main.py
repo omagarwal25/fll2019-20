@@ -40,6 +40,7 @@ def gyro_turn_left(time, target, kp):
         leftMotor.run(error * kp)
     leftMotor.stop(Stop.HOLD)
 
+    
 def gyro_turn_right(sec, target, kp):
     """
     Turns the robot right for a certain time and degrees
@@ -56,6 +57,7 @@ def gyro_turn_right(sec, target, kp):
         rightMotor.run(error * kp)
     rightMotor.stop(Stop.HOLD)
 
+
 def move_forward_degrees(degrees, speed):
     """
     Moves the robot forward or backwards by certain degree at a certain speed
@@ -68,7 +70,6 @@ def move_forward_degrees(degrees, speed):
     while degrees >= leftMotor.angle():
         pass
     mainDriveBase.stop(Stop.HOLD)
-
 
 
 def pid_line_following(kp, ki, kd, degrees, speed):
@@ -97,7 +98,6 @@ def gyro_follow(speed, exit_time, kp):
     """
     Uses the Gyro Sensor to keep robot from Drifting
     :param speed: How fast the robot should go. type: int
-    :param target_angle: The angle the Gyro should follow at. type: float
     :param exit_time: The time in (ms) the program should stop. type: int
     :param kp: How sharply the robot will correct. type: int
     :return: null
